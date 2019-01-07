@@ -8,10 +8,7 @@ import (
 	"path/filepath"
 
 	corejennyv1 "github.com/kfoozminus/booklist-crd/pkg/apis/corejenny/v1"
-	appsv1 "k8s.io/api/apps/v1"
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
@@ -44,7 +41,7 @@ func main() {
 			APIVersion: corejennyv1.SchemeGroupVersion.String(),
 		},
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      "booklistkube-client",
+			Name:      "podjenny-crd",
 			Namespace: "default",
 			Labels: map[string]string{
 				"app": "booklistkube-client",
@@ -109,52 +106,6 @@ func main() {
 	}
 	fmt.Printf("Created Deployment - Name: %q, UID: %q\n", resultDeployment.GetObjectMeta().GetName(), resultDeployment.GetObjectMeta().GetUID())
 
-	service := &corev1.Service{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       "Service",
-			APIVersion: corev1.SchemeGroupVersion.String(),
-		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      "booklistkube-client",
-			Namespace: "default",
-		},
-		Spec: corev1.ServiceSpec{
-			Selector: map[string]string{
-				"app": "booklistkube-client",
-			},
-			Ports: []corev1.ServicePort{
-				{
-					Name:       "exposeds",
-					Port:       1234,
-					TargetPort: intstr.IntOrString{StrVal: "exposedc", Type: 1},
-					//TargetPort: intstr.IntOrString{IntVal: 4321},
-				},
-			},
-			Type: corev1.ServiceTypeNodePort,
-		},
-	}
-	waitForEnter()
-	fmt.Println("Creating Service...")
-	//time.Sleep(60 * time.Second)
-	resultService, err := servicesClient.Create(service)
-	if err != nil {
-		panic(fmt.Errorf("Error while creating Service - %v\n", err))
-	}
-	fmt.Printf("Created Service - Name: %q, UID: %q\n", resultService.GetObjectMeta().GetName(), resultService.GetObjectMeta().GetUID())
-
-	//create or patch service via appscode/kutil
-	waitForEnter()
-	fmt.Println("Patching Service...")
-	servicePatch, kutilVerb, kutilErr := corev1Kutil.CreateOrPatchService(clientset, service.ObjectMeta, func(serviceTransformed *corev1.Service) *corev1.Service {
-		//serviceTransformed = resultService
-		serviceTransformed.Spec.Ports[0].Port = 2345
-		return serviceTransformed
-	})
-	if kutilErr != nil {
-		panic(fmt.Errorf("Error while patching Service - %v\n", kutilErr))
-	}
-	fmt.Printf("%v - Name: %q, UID: %q\n", kutilVerb, servicePatch.GetObjectMeta().GetName(), servicePatch.GetObjectMeta().GetUID())
-
 	//create or patch deployment via appscode/kutil
 	waitForEnter()
 	fmt.Println("Patching Deployment...")
@@ -203,8 +154,8 @@ func main() {
 	}
 
 	//delete objects via Delete Method
-	waitForEnter()
 	fmt.Println("Deleting All the objects...")
+	waitForEnter()
 	deletePolicy := metav1.DeletePropagationForeground
 	if deleteErr := deploymentsClient.Delete("booklistkube-client", &metav1.DeleteOptions{
 		PropagationPolicy: &deletePolicy,
@@ -212,27 +163,6 @@ func main() {
 		panic(fmt.Errorf("Error while deleting deployment - %v\n", deleteErr))
 	}
 	fmt.Println("Deleted Deployment")
-
-	if deleteErr := pvcsClient.Delete("task-pv-claim-client", &metav1.DeleteOptions{
-		PropagationPolicy: &deletePolicy,
-	}); deleteErr != nil {
-		panic(fmt.Errorf("Error while deleting pvc - %v\n", deleteErr))
-	}
-	fmt.Println("Deleted PVC")
-
-	if deleteErr := pvsClient.Delete("task-pv-volume-client", &metav1.DeleteOptions{
-		PropagationPolicy: &deletePolicy,
-	}); deleteErr != nil {
-		panic(fmt.Errorf("Error while deleting pv - %v\n", deleteErr))
-	}
-	fmt.Println("Deleted PV")
-
-	if deleteErr := servicesClient.Delete("booklistkube-client", &metav1.DeleteOptions{
-		PropagationPolicy: &deletePolicy,
-	}); deleteErr != nil {
-		panic(fmt.Errorf("Error while deleting service - %v\n", deleteErr))
-	}
-	fmt.Println("Deleted Service")
 }
 
 func waitForEnter() {
@@ -243,6 +173,3 @@ func waitForEnter() {
 		panic(err)
 	}
 }
-
-func int32ptr(i int32) *int32                                               { return &i }
-func hostpathtypeptr(hostpathtype corev1.HostPathType) *corev1.HostPathType { return &hostpathtype }
