@@ -1,0 +1,3 @@
+/*
+Custom License for kfoozminus Projects
+*/

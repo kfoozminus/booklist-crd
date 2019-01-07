@@ -1,0 +1,7 @@
+apiVersion: "coreJenny/v1"
+kind: AppsCRD
+metadata:
+  name: my-appscrd
+spec:
+  image: kfoozminus/booklist:alpine
+
