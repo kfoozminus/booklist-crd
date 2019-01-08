@@ -7,7 +7,7 @@ Custom License for kfoozminus Projects
 package fake
 
 import (
-	corejennyv1 "github.com/kfoozminus/booklist-crd/pkg/apis/corejenny/v1"
+	kfoozminusv1 "github.com/kfoozminus/booklist-crd/pkg/apis/kfoozminus.com/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -19,7 +19,7 @@ var scheme = runtime.NewScheme()
 var codecs = serializer.NewCodecFactory(scheme)
 var parameterCodec = runtime.NewParameterCodec(scheme)
 var localSchemeBuilder = runtime.SchemeBuilder{
-	corejennyv1.AddToScheme,
+	kfoozminusv1.AddToScheme,
 }
 
 // AddToScheme adds all types of this clientset into the given scheme. This allows composition

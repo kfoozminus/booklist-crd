@@ -12,8 +12,8 @@ import (
 	time "time"
 
 	versioned "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned"
-	corejenny "github.com/kfoozminus/booklist-crd/pkg/client/informers/externalversions/corejenny"
 	internalinterfaces "github.com/kfoozminus/booklist-crd/pkg/client/informers/externalversions/internalinterfaces"
+	kfoozminuscom "github.com/kfoozminus/booklist-crd/pkg/client/informers/externalversions/kfoozminus.com"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 	schema "k8s.io/apimachinery/pkg/runtime/schema"
@@ -160,9 +160,9 @@ type SharedInformerFactory interface {
 	ForResource(resource schema.GroupVersionResource) (GenericInformer, error)
 	WaitForCacheSync(stopCh <-chan struct{}) map[reflect.Type]bool
 
-	Corejenny() corejenny.Interface
+	Kfoozminus() kfoozminuscom.Interface
 }
 
-func (f *sharedInformerFactory) Corejenny() corejenny.Interface {
-	return corejenny.New(f, f.namespace, f.tweakListOptions)
+func (f *sharedInformerFactory) Kfoozminus() kfoozminuscom.Interface {
+	return kfoozminuscom.New(f, f.namespace, f.tweakListOptions)
 }

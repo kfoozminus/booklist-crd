@@ -7,7 +7,7 @@ Custom License for kfoozminus Projects
 package versioned
 
 import (
-	corejennyv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/corejenny/v1"
+	kfoozminusv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/kfoozminus.com/v1"
 	discovery "k8s.io/client-go/discovery"
 	rest "k8s.io/client-go/rest"
 	flowcontrol "k8s.io/client-go/util/flowcontrol"
@@ -15,27 +15,27 @@ import (
 
 type Interface interface {
 	Discovery() discovery.DiscoveryInterface
-	CorejennyV1() corejennyv1.CorejennyV1Interface
+	KfoozminusV1() kfoozminusv1.KfoozminusV1Interface
 	// Deprecated: please explicitly pick a version if possible.
-	Corejenny() corejennyv1.CorejennyV1Interface
+	Kfoozminus() kfoozminusv1.KfoozminusV1Interface
 }
 
 // Clientset contains the clients for groups. Each group has exactly one
 // version included in a Clientset.
 type Clientset struct {
 	*discovery.DiscoveryClient
-	corejennyV1 *corejennyv1.CorejennyV1Client
+	kfoozminusV1 *kfoozminusv1.KfoozminusV1Client
 }
 
-// CorejennyV1 retrieves the CorejennyV1Client
-func (c *Clientset) CorejennyV1() corejennyv1.CorejennyV1Interface {
-	return c.corejennyV1
+// KfoozminusV1 retrieves the KfoozminusV1Client
+func (c *Clientset) KfoozminusV1() kfoozminusv1.KfoozminusV1Interface {
+	return c.kfoozminusV1
 }
 
-// Deprecated: Corejenny retrieves the default version of CorejennyClient.
+// Deprecated: Kfoozminus retrieves the default version of KfoozminusClient.
 // Please explicitly pick a version.
-func (c *Clientset) Corejenny() corejennyv1.CorejennyV1Interface {
-	return c.corejennyV1
+func (c *Clientset) Kfoozminus() kfoozminusv1.KfoozminusV1Interface {
+	return c.kfoozminusV1
 }
 
 // Discovery retrieves the DiscoveryClient
@@ -54,7 +54,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 	}
 	var cs Clientset
 	var err error
-	cs.corejennyV1, err = corejennyv1.NewForConfig(&configShallowCopy)
+	cs.kfoozminusV1, err = kfoozminusv1.NewForConfig(&configShallowCopy)
 	if err != nil {
 		return nil, err
 	}
@@ -70,7 +70,7 @@ func NewForConfig(c *rest.Config) (*Clientset, error) {
 // panics if there is an error in the config.
 func NewForConfigOrDie(c *rest.Config) *Clientset {
 	var cs Clientset
-	cs.corejennyV1 = corejennyv1.NewForConfigOrDie(c)
+	cs.kfoozminusV1 = kfoozminusv1.NewForConfigOrDie(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClientForConfigOrDie(c)
 	return &cs
@@ -79,7 +79,7 @@ func NewForConfigOrDie(c *rest.Config) *Clientset {
 // New creates a new Clientset for the given RESTClient.
 func New(c rest.Interface) *Clientset {
 	var cs Clientset
-	cs.corejennyV1 = corejennyv1.New(c)
+	cs.kfoozminusV1 = kfoozminusv1.New(c)
 
 	cs.DiscoveryClient = discovery.NewDiscoveryClient(c)
 	return &cs

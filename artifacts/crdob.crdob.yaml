@@ -1,7 +1,7 @@
-apiVersion: "coreJenny/v1"
-kind: AppsCRD
+apiVersion: "kfoozminus.com/v1"
+kind: Podjenny
 metadata:
-  name: my-appscrd
+  name: my-pod
 spec:
   image: kfoozminus/booklist:alpine
 

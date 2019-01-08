@@ -8,8 +8,8 @@ package fake
 
 import (
 	clientset "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned"
-	corejennyv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/corejenny/v1"
-	fakecorejennyv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/corejenny/v1/fake"
+	kfoozminusv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/kfoozminus.com/v1"
+	fakekfoozminusv1 "github.com/kfoozminus/booklist-crd/pkg/client/clientset/versioned/typed/kfoozminus.com/v1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -59,12 +59,12 @@ func (c *Clientset) Discovery() discovery.DiscoveryInterface {
 
 var _ clientset.Interface = &Clientset{}
 
-// CorejennyV1 retrieves the CorejennyV1Client
-func (c *Clientset) CorejennyV1() corejennyv1.CorejennyV1Interface {
-	return &fakecorejennyv1.FakeCorejennyV1{Fake: &c.Fake}
+// KfoozminusV1 retrieves the KfoozminusV1Client
+func (c *Clientset) KfoozminusV1() kfoozminusv1.KfoozminusV1Interface {
+	return &fakekfoozminusv1.FakeKfoozminusV1{Fake: &c.Fake}
 }
 
-// Corejenny retrieves the CorejennyV1Client
-func (c *Clientset) Corejenny() corejennyv1.CorejennyV1Interface {
-	return &fakecorejennyv1.FakeCorejennyV1{Fake: &c.Fake}
+// Kfoozminus retrieves the KfoozminusV1Client
+func (c *Clientset) Kfoozminus() kfoozminusv1.KfoozminusV1Interface {
+	return &fakekfoozminusv1.FakeKfoozminusV1{Fake: &c.Fake}
 }

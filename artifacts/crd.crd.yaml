@@ -1,19 +1,19 @@
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
-  name: appscrds.corejenny
+  name: podjennies.kfoozminus.com
 spec:
-  group: corejenny
+  group: kfoozminus.com
   versions:
     - name: v1
       served: true
       storage: true
   scope: Namespaced
   names:
-    plural: appscrds
-    singular: appscrd
-    kind: AppsCRD
-    listKind: AppsCRDList
+    plural: podjennies
+    singular: podjenny
+    kind: Podjenny
+    listKind: PodjennyList
     shortNames:
-    - acrd
+    - pj
 

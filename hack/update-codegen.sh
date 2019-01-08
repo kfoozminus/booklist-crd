@@ -9,5 +9,5 @@ CODEGEN_PKG=${CODEGEN_PKG:-$(cd ${SCRIPT_ROOT}; ls -d -1 ./vendor/k8s.io/code-ge
 
 vendor/k8s.io/code-generator/generate-groups.sh all \
   github.com/kfoozminus/booklist-crd/pkg/client github.com/kfoozminus/booklist-crd/pkg/apis \
-  corejenny:v1 \
+  kfoozminus.com:v1 \
   --go-header-file ${SCRIPT_ROOT}/hack/boilerplate.go.txt
